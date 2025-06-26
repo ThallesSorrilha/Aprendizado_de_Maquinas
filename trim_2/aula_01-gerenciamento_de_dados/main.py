@@ -5,7 +5,12 @@ def transforma_valores( data, coluna ):
     valor = data[ coluna ]
     vlr_orig, vlr, count = np.unique(valor, return_inverse=True, return_counts=True)
     data[ coluna ] = vlr
-    return data, vlr_orig, vlr, count
+    info = {
+        'orig': vlr_orig,
+        'classes': vlr,
+        'count': count
+    }
+    return data, info
 
 
 def data_set_v2( fname ):
@@ -17,12 +22,7 @@ def data_set_v2( fname ):
 
     info = {}
     for colname in process:
-        data, orig, classes, cnt = transforma_valores( data, colname )
-        info[colname] = {
-            'orig': orig,
-            'classes': classes,
-            'count': cnt
-        }
+        data, info[colname] = transforma_valores( data, colname )
 
     result['dados'] = data.drop(columns='class')
     result['classes'] = info['class']['classes']
