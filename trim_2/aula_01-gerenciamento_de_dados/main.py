@@ -4,10 +4,8 @@ import numpy as np
 def transforma_valores( data, coluna ):
     valor = data[ coluna ]
     vlr_orig, vlr, count = np.unique(valor, return_inverse=True, return_counts=True)
-    data.drop( columns=coluna )
     data[ coluna ] = vlr
-
-    return data
+    return data, vlr_orig, vlr, count
 
 
 def data_set_v2( fname ):
@@ -16,13 +14,20 @@ def data_set_v2( fname ):
 
     data = pd.read_csv(fname, skipinitialspace=True)
     process = ['workclass', 'native-country', 'education', 'marital-status', 'class']
-    for colname in process:
-        transforma_valores( data, colname )
 
-    # result['dados'] = df
-    # result['classes'] = classes
-    # result['cls-orig'] = cls_orig
-    # result['cls-count'] = cls_cnt
+    info = {}
+    for colname in process:
+        data, orig, classes, cnt = transforma_valores( data, colname )
+        info[colname] = {
+            'orig': orig,
+            'classes': classes,
+            'count': cnt
+        }
+
+    result['dados'] = data.drop(columns='class')
+    result['classes'] = info['class']['classes']
+    result['cls-orig'] = info['class']['orig']
+    result['cls-count'] = info['class']['count']
 
     return result
 
@@ -65,7 +70,7 @@ def mostra_desbalanceamento( data ):
     print('desbalanceamento -->', max)
 
 
-FNAME = 'aula--jun-24/adult.csv'
+FNAME = 'trim_2/aula_01-gerenciamento_de_dados/adult.csv'
 
 if __name__ == '__main__':
     data = data_set_v2(FNAME)
