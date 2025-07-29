@@ -2,7 +2,6 @@
 import pandas as pd #importa pandas
 import numpy as np #importa numpy
 
-
 def _transform_col( data ): # função com base em data
 
     vlr_orig, values, count = np.unique(data, return_inverse=True, return_counts=True) # retorna para cada variável o valor respectivo ao parâmetro: classes em numérico, lista dos dados em classes(numérico), contagem de elementos para cada classe # unique retorna valores únicos
@@ -21,7 +20,6 @@ def _transform_data(data, col_list): # função que tem como parâmetro data, e 
         ret['colname'] = colname # dicionário de dados ret com base em colname será atribuído colname
         data.drop( columns=colname )
         data[ colname ] = ret['values']
-
     return data
 
 
@@ -65,6 +63,4 @@ def data_set( fname ):
     result['classes'] = classes
 
     return result
-
-
 
