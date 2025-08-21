@@ -1,0 +1,19 @@
+Acurácia -> proporção de acertos de previsão com relação às previsões totais
+
+prev: 010101
+real: 000110
+      OXOOXX
+
+          ypred
+          1   0
+         -------
+ytrue 1 |  1   2
+      0 |  1   2
+
+ac: (tp + tn) / (tp + tn + fp + fn)
+acurácia: 3/6 = 50%
+
+precisão: tp / (tp + fp)
+recall:   tp / (tp + fn)
+
+f1 = (2 * precisão * recall) / (precisão + recall)
