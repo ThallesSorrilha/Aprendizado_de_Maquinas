@@ -1,7 +1,5 @@
 
-
 from dataset import data_set
-
 
 FNAME = '../datasets/adult.csv'
 
@@ -15,15 +13,10 @@ FNAME = '../datasets/adult.csv'
     x_teste = [linha[:-1] for linha in dados[split_idx:]]
     y_teste = [linha[-1] for linha in dados[split_idx:]]'''
 
-
 if __name__ == '__main__':
     data = data_set(FNAME)
     for key, value in data.items():
         print(key)
-
     fname = FNAME.split('/')
     fname = fname[-1]
     print('fname -->', fname) 
-
-
-
