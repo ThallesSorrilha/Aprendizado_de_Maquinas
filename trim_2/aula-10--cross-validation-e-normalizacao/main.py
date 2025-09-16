@@ -12,7 +12,7 @@ from sklearn.tree import DecisionTreeClassifier
 from dataset import preprocess_adult_data
 
 FNAME = "../datasets/adult.csv"
-# FNAME = "../datasets/mushroom/agaricus-lepiota.csv"
+# FNAME = "../datasets/mushroom/agaricus-lepiota.data"
 
 
 def get_classifiers():
