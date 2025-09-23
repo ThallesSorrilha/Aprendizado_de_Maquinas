@@ -19,18 +19,15 @@ import numpy as np
 # native-country: United-States, Cambodia, England, Puerto-Rico, Canada, Germany, Outlying-US(Guam-USVI-etc), India, Japan, Greece, South, China, Cuba, Iran, Honduras, Philippines, Italy, Poland, Jamaica, Vietnam, Mexico, Portugal, Ireland, France, Dominican-Republic, Laos, Ecuador, Taiwan, Haiti, Columbia, Hungary, Guatemala, Nicaragua, Scotland, Thailand, Yugoslavia, El-Salvador, Trinadad&Tobago, Peru, Hong, Holand-Netherlands.
 
 FNAME = '../datasets/adult.csv'
-REMOCAO = ['capital-gain','capital-loss']
-NORMALIZ = ['age','final_weight','education-num']
-CATEGORIZ = ['workclass','education','marital-status','occupation','relationship','race','sex','hours-per-week','native-country','class']
+REMOCAO = ['capital-gain', 'capital-loss']
+NORMALIZ = ['age', 'final_weight', 'education-num']
+CATEGORIZ = ['workclass', 'education', 'marital-status', 'occupation',
+             'relationship', 'race', 'sex', 'hours-per-week', 'native-country', 'class']
+
 
 def categoriz_col(data):
-    vlr_orig, values, count = np.unique(
-        data, return_inverse=True, return_counts=True) ##################
-    result = {}
-    result['vlr-orig'] = list(vlr_orig)
-    result['values'] = list(values)
-    result['vlr-count'] = list(count)
-    return result
+    _, values = np.unique(data, return_inverse=True)
+    return list(values)
 
 
 def normalize_col(data):
@@ -44,8 +41,6 @@ def normalize_col(data):
 
 
 def load_dataset(fname, normaliz=None, categoriz=None, remocao=None):
-    result = {}
-    result['nome-arquivo'] = fname
     data = pd.read_csv(fname, skipinitialspace=True, skip_blank_lines=True)
     if remocao:
         data.drop(columns=remocao, inplace=True)
@@ -54,13 +49,9 @@ def load_dataset(fname, normaliz=None, categoriz=None, remocao=None):
     if normaliz:
         for col in normaliz:
             data[col] = normalize_col(data[col])
-    result['data'] = data
     if categoriz:
         for col in categoriz:
-            dict = categoriz_col(data[col]) #################
-            result['data'][col] = dict['values']
-    print(result['data']['age'])
-    return result #######################
+            data[col] = categoriz_col(data[col])
 
 
 if __name__ == '__main__':
