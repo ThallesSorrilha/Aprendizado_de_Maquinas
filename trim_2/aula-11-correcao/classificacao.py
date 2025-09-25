@@ -24,8 +24,8 @@ CATEGORIZ = ['workclass', 'education', 'marital-status', 'occupation',
              'relationship', 'race', 'sex', 'hours-per-week', 'native-country', 'class']
 
 data = load_dataset(FNAME, NORMALIZ, CATEGORIZ, REMOCAO)
-alldata = data
-alltarg = data.T
+alltarg = data['class']
+alldata = data.drop(columns=['class'])
 
 
 results = {
@@ -42,6 +42,9 @@ rng = np.random.RandomState()
 def get_cv_value(xdata, ytarg):
 
     part = int(len(ytarg)*0.8)  # assumindo 80%
+    print("part:")
+    print(part)
+
     parcial_result = {
         'perceptron':   [],
         'svm':          [],
@@ -52,11 +55,24 @@ def get_cv_value(xdata, ytarg):
 
     for crossv in range(5):
 
+        print("xdata:")
+        print(xdata)
+        print("ytarg:")
+        print(ytarg)
+
         # xtr --> x_treino  ;  xte --> x_teste
         xtr = xdata[:part]
+        print("xtr:")
+        print(xtr)
         ytr = ytarg[:part]
+        print("ytr:")
+        print(ytr)
         xte = xdata[part:]
+        print("xte:")
+        print(xte)
         yte = ytarg[part:]
+        print("yte:")
+        print(yte)
 
         perceptron = Perceptron(max_iter=100, random_state=rng)
         model_svc = SVC(probability=True, gamma='auto', random_state=rng)
@@ -75,15 +91,16 @@ def get_cv_value(xdata, ytarg):
 
         ytrue = yte
         # print('Treinando cada classificador e encontrando o score')
+        '''
         for clf_name, classific in clfs.items():
             classific.fit(xtr, ytr)
             ypred = classific.predict(xte)
             f1 = metrics.f1_score(ytrue, ypred, average='macro')
             print(clf_name, '-- f1:', f1)
             parcial_result[clf_name].append(f1)
-
-        ytarg = list(ytarg[part:]) + list(ytarg[:part])
-        xdata = list(xdata[part:]) + list(xdata[:part])
+        '''
+        ytarg = list(ytarg[part:]) + list(ytarg[:part]) ###
+        xdata = list(xdata[part:]) + list(xdata[:part]) ###
 
         print('####\n####')
 
@@ -100,9 +117,9 @@ def principal():
     for exec_id in range(3):
         # embaralhar os dados
         idx = list(range(len(alltarg)))
-        shuffle(idx)
-        xdata = alldata[idx]
-        ytarg = alltarg[idx]
+        #shuffle(idx) ###################
+        xdata = alldata.iloc[idx]
+        ytarg = alltarg.iloc[idx]
         ret = get_cv_value(xdata, ytarg)
         print(ret)
 

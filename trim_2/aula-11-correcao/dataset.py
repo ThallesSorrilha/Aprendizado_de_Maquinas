@@ -46,12 +46,14 @@ def load_dataset(fname, normaliz=None, categoriz=None, remocao=None):
         data.drop(columns=remocao, inplace=True)
     data.replace('?', np.nan, inplace=True)
     data.dropna(inplace=True)
+    data = data.reset_index(drop=True)
     if normaliz:
         for col in normaliz:
             data[col] = normalize_col(data[col])
     if categoriz:
         for col in categoriz:
             data[col] = categoriz_col(data[col])
+    return data
 
 
 if __name__ == '__main__':
